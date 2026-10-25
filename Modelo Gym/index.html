@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="es" class="no-js">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Atlas — Gimnasio de fuerza y movimiento</title>
+  <meta name="description" content="Atlas es un gimnasio de fuerza, boxeo, movilidad y resistencia. Entrenamiento con método, en una sala que se toma el cuerpo en serio." />
+  <meta name="theme-color" content="#c4c3b6" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14.5' fill='%23c4c3b6' stroke='%23000' stroke-width='1.5'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-size='17' text-anchor='middle'%3EA%3C/text%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="preload" as="image" href="assets/img/remo.jpg" />
+  <link rel="stylesheet" href="styles.css?v=20261025a" />
+</head>
+<body>
+
+  <!-- ───────── Intro: telón ───────── -->
+  <div class="splash" data-splash aria-hidden="true">
+    <div class="splash-half splash-half--top"></div>
+    <div class="splash-half splash-half--bottom"></div>
+    <div class="splash-inner">
+      <p class="splash-label">Atlas · Sala de entrenamiento</p>
+      <p class="splash-count"><span data-splash-count>0</span><sup>%</sup></p>
+      <p class="splash-label">Calentando la sala</p>
+    </div>
+  </div>
+
+  <!-- Grano de papel + cursor -->
+  <div class="grain" aria-hidden="true"></div>
+  <div class="cursor" data-cursor aria-hidden="true"><span data-cursor-label></span></div>
+
+  <!-- Indicador de sala -->
+  <div class="room" data-room-indicator aria-hidden="true">
+    <i class="room-hex"></i><span data-room-text>Sala I · Portada</span>
+  </div>
+
+  <!-- ───────── Header ───────── -->
+  <header class="masthead" data-masthead>
+    <a href="#inicio" class="logo" aria-label="Atlas — inicio">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14.75" fill="none" stroke="currentColor" stroke-width="1.5"/><text x="16" y="22.2" text-anchor="middle">A</text></svg>
+    </a>
+    <a href="#prueba" class="ghost-link">Reservar clase de prueba</a>
+  </header>
+
+  <main>
+
+    <!-- ───────── I. Hero ───────── -->
+    <section class="hero" id="inicio" data-room="I · Portada">
+      <div class="hero-cluster">
+        <p class="label">Sala de entrenamiento · Desde 2014</p>
+        <h1 class="hero-title" data-split>La fuerza <em>como</em> obra de arte</h1>
+        <div class="stat-pair reveal">
+          <span>SOCIOS: <b data-count="1240">1.240</b></span>
+          <span>CLASES/SEMANA: <b data-count="64">64</b></span>
+          <span>AFORO AHORA: <b data-aforo>32%</b></span>
+        </div>
+        <a href="#prueba" class="pill reveal" data-magnetic>Prueba un día gratis</a>
+      </div>
+
+      <a href="#prueba" class="seal" aria-label="Reserva tu día de prueba gratis" data-magnetic>
+        <svg viewBox="0 0 200 200" aria-hidden="true">
+          <defs><path id="sealPath" d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0" /></defs>
+          <text><textPath href="#sealPath">Primer día gratis · Sin permanencia ·</textPath></text>
+        </svg>
+        <span class="seal-core">↓</span>
+      </a>
+
+      <div class="wordmark-wrap" data-lens data-wordmark>
+        <div class="wordmark" data-chars>Atlas</div>
+        <div class="wordmark wordmark--paint" aria-hidden="true">Atlas</div>
+      </div>
+    </section>
+
+    <!-- ───────── II. Portal: la pintura se abre al hacer scroll ───────── -->
+    <section class="portal" data-portal data-room="II · El estudio" aria-label="Thomas Eakins, The Champion Single Sculls, 1871">
+      <div class="portal-sticky">
+        <h2 class="portal-title" data-portal-title>Entra<br/><em>en la</em> sala</h2>
+        <div class="portal-frame" data-portal-frame>
+          <img src="assets/img/remo.jpg" alt="Óleo de Thomas Eakins: un remero en un bote individual sobre un río en calma" fetchpriority="high" />
+        </div>
+        <article class="notched-card portal-card" data-portal-card>
+          <p class="label label--light">Sala II</p>
+          <h3>El cuerpo<br/><em>se entrena</em><br/>como se pinta</h3>
+          <p class="card-copy">Capa a capa. Sin prisa y sin atajos. Cada sesión es una pincelada; el progreso se ve cuando das un paso atrás.</p>
+          <span class="micro">SCROLL</span>
+          <span class="micro micro--right">Eakins, 1871</span>
+        </article>
+      </div>
+    </section>
+
+    <!-- ───────── Marquesina ───────── -->
+    <div class="marquee" data-marquee aria-hidden="true">
+      <div class="marquee-track" data-marquee-track>
+        <span>Fuerza <i></i> Resistencia <i></i> <em>Movilidad</em> <i></i> Boxeo <i></i> <em>Lucha</em> <i></i> Remo <i></i> </span>
+        <span>Fuerza <i></i> Resistencia <i></i> <em>Movilidad</em> <i></i> Boxeo <i></i> <em>Lucha</em> <i></i> Remo <i></i> </span>
+      </div>
+    </div>
+
+    <!-- ───────── III. Método ───────── -->
+    <section class="ink-room" id="metodo" data-room="III · El método">
+      <div class="corner-labels"><span>03</span><span>El método</span></div>
+      <h2 class="section-header" data-split>El método Atlas</h2>
+      <p class="lede lede--light reveal">Tres pilares, un mismo cuerpo. Todo programa en Atlas reparte la semana entre estas tres disciplinas, en la proporción que tu objetivo necesita.</p>
+
+      <div class="vignettes">
+        <figure class="vignette reveal" data-cursor-label="Fuerza">
+          <figcaption>Fuerza</figcaption>
+          <div class="orbit">
+            <svg class="orbit-ring" viewBox="0 0 300 300" aria-hidden="true">
+              <defs><path id="o1" d="M150,150 m-138,0 a138,138 0 1,1 276,0 a138,138 0 1,1 -276,0" /></defs>
+              <text><textPath href="#o1">Halterofilia · Powerlifting · Kettlebell · Halterofilia · Powerlifting · Kettlebell · </textPath></text>
+            </svg>
+            <div class="circle"><img src="assets/img/discobolo.webp" alt="Escultura del Discóbolo de Mirón en el Vaticano" loading="lazy" /></div>
+          </div>
+          <p>Cargas progresivas y técnica revisada en cada serie. Aprender a levantar antes de levantar mucho.</p>
+          <div class="hexes" aria-hidden="true"><i class="on"></i><i></i><i></i></div>
+        </figure>
+        <figure class="vignette reveal" data-cursor-label="Resistencia">
+          <figcaption>Resistencia</figcaption>
+          <div class="orbit">
+            <svg class="orbit-ring" viewBox="0 0 300 300" aria-hidden="true">
+              <defs><path id="o2" d="M150,150 m-138,0 a138,138 0 1,1 276,0 a138,138 0 1,1 -276,0" /></defs>
+              <text><textPath href="#o2">Remo · Carrera · Air bike · Circuitos · Remo · Carrera · Air bike · Circuitos · </textPath></text>
+            </svg>
+            <div class="circle"><img src="assets/img/carrera.webp" alt="Fotografía secuencial de Muybridge de un atleta corriendo, 1881" loading="lazy" /></div>
+          </div>
+          <p>Zonas de pulso medidas, no intuidas. Motor para el resto de tu vida, no solo para el verano.</p>
+          <div class="hexes" aria-hidden="true"><i></i><i class="on"></i><i></i></div>
+        </figure>
+        <figure class="vignette reveal" data-cursor-label="Movilidad">
+          <figcaption>Movilidad</figcaption>
+          <div class="orbit">
+            <svg class="orbit-ring" viewBox="0 0 300 300" aria-hidden="true">
+              <defs><path id="o3" d="M150,150 m-138,0 a138,138 0 1,1 276,0 a138,138 0 1,1 -276,0" /></defs>
+              <text><textPath href="#o3">Estiramiento · Control · Respiración · Estiramiento · Control · Respiración · </textPath></text>
+            </svg>
+            <div class="circle"><img src="assets/img/barra.jpg" alt="Óleo de Degas: dos bailarinas estirando en la barra" loading="lazy" /></div>
+          </div>
+          <p>Control articular y respiración. La parte del entrenamiento que hace posible todo lo demás.</p>
+          <div class="hexes" aria-hidden="true"><i></i><i></i><i class="on"></i></div>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ───────── IV. Disciplinas: galería horizontal ───────── -->
+    <section class="gallery" id="disciplinas" data-gallery data-room="IV · Colección">
+      <div class="gallery-sticky">
+        <div class="gallery-head">
+          <span class="label">04 · Colección permanente</span>
+          <span class="label" data-gallery-count>01 / 04</span>
+        </div>
+        <div class="gallery-track" data-gallery-track>
+          <div class="gallery-intro">
+            <h2 class="section-header section-header--left" data-split>Disci&shy;plinas</h2>
+            <p class="lede lede--left">Cuatro salas, cuatro maneras de ponerte a prueba. Desliza como quien recorre un museo.</p>
+            <span class="gallery-arrow" aria-hidden="true">→</span>
+          </div>
+
+          <article class="exhibit" data-tilt data-cursor-label="Boxeo">
+            <div class="exhibit-img"><img src="assets/img/boxeo.webp" alt="Óleo de George Bellows, Stag at Sharkey's, dos boxeadores en el ring" loading="lazy" /></div>
+            <div class="wall-label">
+              <span class="cat-no">Nº 01</span>
+              <h3>Boxeo</h3>
+              <p class="medium">Guantes, saco y cuerda · 60 min</p>
+              <p>Técnica de golpeo, desplazamientos y sparring opcional. Para quien quiere sudar con la cabeza encendida.</p>
+              <dl><dt>Intensidad</dt><dd><span class="bar" style="--v:.9"></span></dd></dl>
+            </div>
+          </article>
+          <article class="exhibit" data-tilt data-cursor-label="Lucha">
+            <div class="exhibit-img"><img src="assets/img/lucha.webp" alt="Óleo de Thomas Eakins, Wrestlers, dos luchadores en el suelo" loading="lazy" /></div>
+            <div class="wall-label">
+              <span class="cat-no">Nº 02</span>
+              <h3>Lucha y grappling</h3>
+              <p class="medium">Tatami · 75 min</p>
+              <p>Agarres, palancas y control en suelo. Fuerza aplicada, paciencia y mucho respeto por el compañero.</p>
+              <dl><dt>Intensidad</dt><dd><span class="bar" style="--v:.8"></span></dd></dl>
+            </div>
+          </article>
+          <article class="exhibit" data-tilt data-cursor-label="Fuerza">
+            <div class="exhibit-img"><img src="assets/img/hidra.jpg" alt="Pintura romana sobre mármol de Hércules luchando contra la Hidra" loading="lazy" /></div>
+            <div class="wall-label">
+              <span class="cat-no">Nº 03</span>
+              <h3>Fuerza funcional</h3>
+              <p class="medium">Barra, kettlebell y trineo · 60 min</p>
+              <p>Los doce trabajos, versión moderna: empujar, tirar, cargar, girar. Movimientos que sirven fuera del gimnasio.</p>
+              <dl><dt>Intensidad</dt><dd><span class="bar" style="--v:.75"></span></dd></dl>
+            </div>
+          </article>
+          <article class="exhibit" data-tilt data-cursor-label="Remo">
+            <div class="exhibit-img"><img src="assets/img/remo.jpg" alt="Detalle del óleo de Eakins con un remero en el río" loading="lazy" style="object-position:55% 75%" /></div>
+            <div class="wall-label">
+              <span class="cat-no">Nº 04</span>
+              <h3>Remo indoor</h3>
+              <p class="medium">Ergómetro · 45 min</p>
+              <p>El ejercicio más completo que existe, medido al vatio. Series por intervalos y test mensual de 2.000 metros.</p>
+              <dl><dt>Intensidad</dt><dd><span class="bar" style="--v:.7"></span></dd></dl>
+            </div>
+          </article>
+        </div>
+        <div class="gallery-progress" aria-hidden="true"><span data-gallery-bar></span></div>
+      </div>
+    </section>
+
+    <!-- ───────── Manifiesto: el texto se talla al leer ───────── -->
+    <section class="manifesto" data-room="V · Manifiesto">
+      <p class="label">Manifiesto</p>
+      <p class="manifesto-text" data-carve>Ningún cuerpo nace esculpido. Se talla sesión a sesión, como el mármol: quitando lo que sobra, <em>con paciencia</em> y con un buen cincel. Aquí ponemos el cincel. Tú pones las horas.</p>
+      <p class="manifesto-sign">— El equipo Atlas</p>
+    </section>
+
+    <!-- ───────── VI. Horario ───────── -->
+    <section class="ink-room" id="horario" data-room="VI · Calendario">
+      <div class="corner-labels"><span>06</span><span>Horario de sala</span></div>
+      <h2 class="section-header" data-split>El calendario</h2>
+      <p class="lede lede--light reveal">La sala abre de 6:30 a 22:30 entre semana y de 9:00 a 14:00 los fines de semana. Las clases dirigidas, aquí.</p>
+
+      <div class="schedule-wrap reveal">
+        <div class="day-tabs" role="tablist" aria-label="Día de la semana" data-tabs>
+          <button role="tab" data-day="1">Lun</button>
+          <button role="tab" data-day="2">Mar</button>
+          <button role="tab" data-day="3">Mié</button>
+          <button role="tab" data-day="4">Jue</button>
+          <button role="tab" data-day="5">Vie</button>
+          <button role="tab" data-day="6">Sáb</button>
+        </div>
+        <ol class="schedule" data-schedule>
+          <li><time>07:00</time><span class="cls">Fuerza funcional</span><span class="coach">Irene</span></li>
+          <li><time>09:30</time><span class="cls">Movilidad</span><span class="coach">Tomás</span></li>
+          <li><time>13:30</time><span class="cls">Remo indoor</span><span class="coach">Irene</span></li>
+          <li><time>18:30</time><span class="cls">Boxeo</span><span class="coach">Darío</span></li>
+          <li><time>20:00</time><span class="cls">Lucha y grappling</span><span class="coach">Marta</span></li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ───────── VII. Equipo ───────── -->
+    <section class="putty-section putty-section--bone" id="equipo" data-room="VII · Los maestros">
+      <div class="corner-labels"><span>07</span><span>Los maestros</span></div>
+      <h2 class="section-header" data-split>El equipo</h2>
+      <div class="team">
+        <figure class="member reveal" data-cursor-label="Irene">
+          <div class="circle circle--sm"><img src="assets/img/diadumeno.jpg" alt="Escultura del Diadúmeno Farnese" loading="lazy" style="object-position:50% 12%" /></div>
+          <figcaption><span class="name">Irene Vidal</span><span class="role">Fuerza y remo · CSCS</span></figcaption>
+        </figure>
+        <figure class="member reveal" data-cursor-label="Darío">
+          <div class="circle circle--sm"><img src="assets/img/atleta.jpg" alt="Escultura romana de un atleta victorioso" loading="lazy" style="object-position:50% 10%" /></div>
+          <figcaption><span class="name">Darío Llorente</span><span class="role">Boxeo · ex campeón regional</span></figcaption>
+        </figure>
+        <figure class="member reveal" data-cursor-label="Marta">
+          <div class="circle circle--sm"><img src="assets/img/cabeza.jpg" alt="Cabeza de mármol de un atleta, época romana" loading="lazy" /></div>
+          <figcaption><span class="name">Marta Quiroga</span><span class="role">Grappling · cinturón marrón</span></figcaption>
+        </figure>
+        <figure class="member reveal" data-cursor-label="Tomás">
+          <div class="circle circle--sm"><img src="assets/img/discobolo.webp" alt="Detalle del Discóbolo de Mirón" loading="lazy" style="object-position:70% 15%" /></div>
+          <figcaption><span class="name">Tomás Benet</span><span class="role">Movilidad y readaptación</span></figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ───────── VIII. Tarifas ───────── -->
+    <section class="putty-section" id="tarifas" data-room="VIII · Membresías">
+      <div class="corner-labels"><span>08</span><span>Membresías</span></div>
+      <h2 class="section-header" data-split>Las tarifas</h2>
+      <p class="lede reveal">Sin matrícula y sin permanencia. Si un mes no puedes venir, congelas la cuota.</p>
+
+      <div class="plans">
+        <article class="plan reveal" data-tilt>
+          <p class="label">Boceto</p>
+          <p class="price">39<span>€/mes</span></p>
+          <ul>
+            <li>Acceso libre a sala</li>
+            <li>2 clases dirigidas por semana</li>
+            <li>Valoración inicial</li>
+          </ul>
+          <a href="#prueba" class="pill pill--ghost" data-plan="Boceto" data-magnetic>Elegir Boceto</a>
+        </article>
+        <article class="plan plan--ink reveal" data-tilt>
+          <p class="label label--light">Óleo · El más elegido</p>
+          <p class="price">59<span>€/mes</span></p>
+          <ul>
+            <li>Acceso libre a sala</li>
+            <li>Clases dirigidas ilimitadas</li>
+            <li>Programa revisado cada 6 semanas</li>
+            <li>Test de rendimiento trimestral</li>
+          </ul>
+          <a href="#prueba" class="pill pill--paper" data-plan="Óleo" data-magnetic>Elegir Óleo</a>
+        </article>
+        <article class="plan reveal" data-tilt>
+          <p class="label">Obra maestra</p>
+          <p class="price">119<span>€/mes</span></p>
+          <ul>
+            <li>Todo lo del plan Óleo</li>
+            <li>4 sesiones de entrenamiento personal</li>
+            <li>Pauta nutricional</li>
+          </ul>
+          <a href="#prueba" class="pill pill--ghost" data-plan="Obra maestra" data-magnetic>Elegir Obra maestra</a>
+        </article>
+      </div>
+    </section>
+
+    <!-- ───────── IX. Prueba gratis ───────── -->
+    <section class="painting-panel painting-panel--short" data-room="IX · Entrada libre" aria-label="George Bellows, Stag at Sharkey's, 1909">
+      <img src="assets/img/boxeo.webp" alt="" loading="lazy" />
+      <article class="notched-card notched-card--form reveal" id="prueba">
+        <p class="label label--light">Entrada libre</p>
+        <h2>Ven a<br/><em>probar</em> un día</h2>
+        <!-- Web3Forms: los datos se envían a api.web3forms.com, que te los reenvía por email.
+             access_key identifica tu cuenta de Web3Forms (es pública por diseño: solo indica a qué email reenviar). -->
+        <form class="trial-form" data-form name="reserva-prueba" method="POST" action="https://api.web3forms.com/submit" novalidate>
+          <input type="hidden" name="access_key" value="b5dd56a3-4fb4-47bc-9ae1-3e5094fa7c41" />
+          <input type="hidden" name="subject" value="Nueva reserva de prueba · Atlas" />
+          <input type="hidden" name="from_name" value="Web Atlas" />
+          <!-- Antispam de Web3Forms: casilla oculta que solo marcan los robots -->
+          <input type="checkbox" name="botcheck" hidden tabindex="-1" autocomplete="off" />
+          <label><span>Nombre</span><input name="nombre" required autocomplete="name" /></label>
+          <label><span>Teléfono o email</span><input name="contacto" required /></label>
+          <label><span>Disciplina</span>
+            <select name="disciplina">
+              <option>Fuerza funcional</option>
+              <option>Boxeo</option>
+              <option>Lucha y grappling</option>
+              <option>Remo indoor</option>
+              <option>Movilidad</option>
+            </select>
+          </label>
+          <input type="hidden" name="plan" data-plan-field />
+          <button type="submit" class="pill pill--paper">Reservar mi día</button>
+          <p class="form-msg" data-form-msg role="status"></p>
+        </form>
+        <span class="micro">Bellows, 1909</span>
+      </article>
+    </section>
+
+  </main>
+
+  <!-- ───────── Footer ───────── -->
+  <footer class="chalk-footer" data-room="X · Salida">
+    <div class="foot-grid">
+      <div>
+        <p class="label">Dirección</p>
+        <p>Calle del Gimnasio 12<br/>28000 Madrid</p>
+      </div>
+      <div>
+        <p class="label">Horario</p>
+        <p>L–V 6:30–22:30<br/>S–D 9:00–14:00</p>
+      </div>
+      <div>
+        <p class="label">Contacto</p>
+        <p><a href="tel:+34600000000">600 000 000</a><br/><a href="mailto:hola@atlas.gym">hola@atlas.gym</a></p>
+      </div>
+      <div>
+        <p class="label">Índice</p>
+        <p><a href="#metodo">Método</a> · <a href="#disciplinas">Disciplinas</a> · <a href="#horario">Horario</a> · <a href="#tarifas">Tarifas</a></p>
+      </div>
+    </div>
+    <div class="foot-mark" aria-label="Atlas" data-foot-mark><span><b>A</b></span><span><b>t</b></span><span><b>l</b></span><span><b>a</b></span><span><b>s</b></span></div>
+    <p class="footer-credits">© 2026 Atlas. Obras de dominio público vía Openverse. <a href="creditos.html">Créditos de las imágenes →</a></p>
+  </footer>
+
+  <script defer src="main.js?v=20261025a"></script>
+</body>
+</html>

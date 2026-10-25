@@ -1,0 +1,112 @@
+﻿{
+    "remo":  {
+                 "src":  "assets/img/remo.jpg",
+                 "title":  "The Champion Single Sculls (Max Schmitt in a Single Scull)",
+                 "creator":  "Thomas Eakins",
+                 "creator_url":  null,
+                 "license":  "cc0",
+                 "license_version":  "1.0",
+                 "license_url":  "https://creativecommons.org/publicdomain/zero/1.0/",
+                 "foreign_landing_url":  "https://www.metmuseum.org/art/collection/search/10819",
+                 "source":  "met"
+             },
+    "diadumeno":  {
+                      "src":  "assets/img/diadumeno.jpg",
+                      "title":  "The Farnese Diadoumenos, 1st C. Roman Marble Copy of Greek Bronze Statue of Athlete Binding Victor\u0027s Fillet Around Head, c. 440 BC",
+                      "creator":  "Gary Lee Todd, Ph.D.",
+                      "creator_url":  "https://www.flickr.com/photos/101561334@N08",
+                      "license":  "cc0",
+                      "license_version":  "1.0",
+                      "license_url":  "https://creativecommons.org/publicdomain/zero/1.0/",
+                      "foreign_landing_url":  "https://www.flickr.com/photos/101561334@N08/35720417524",
+                      "source":  "flickr"
+                  },
+    "atleta":  {
+                   "src":  "assets/img/atleta.jpg",
+                   "title":  "Statue of a Victorious Athlete Known as \u0027Berlin Athlete\u0027 - Roman Marble Copy of Greek Bronze Original, 320-310 BC",
+                   "creator":  "Gary Lee Todd, Ph.D.",
+                   "creator_url":  "https://www.flickr.com/photos/101561334@N08",
+                   "license":  "cc0",
+                   "license_version":  "1.0",
+                   "license_url":  "https://creativecommons.org/publicdomain/zero/1.0/",
+                   "foreign_landing_url":  "https://www.flickr.com/photos/101561334@N08/28123386523",
+                   "source":  "flickr"
+               },
+    "barra":  {
+                  "src":  "assets/img/barra.jpg",
+                  "title":  "Dancers Practicing at the Barre",
+                  "creator":  "Edgar Degas",
+                  "creator_url":  null,
+                  "license":  "cc0",
+                  "license_version":  "1.0",
+                  "license_url":  "https://creativecommons.org/publicdomain/zero/1.0/",
+                  "foreign_landing_url":  "https://www.metmuseum.org/art/collection/search/436139",
+                  "source":  "met"
+              },
+    "hidra":  {
+                  "src":  "assets/img/hidra.jpg",
+                  "title":  "\u0027Hercules encounters the Hydra, a monstrous serpent \u0027 - painting on marble from the house of Relief of Telephus, perhaps house of Marcus Nonius Balbus (Augustan age, 27 BC-14 AD) at Herculaneum, buried by Vesuvius\u0027 eruption on 79 AD - Naples, Archaeologic",
+                  "creator":  "Carlo Raso",
+                  "creator_url":  "https://www.flickr.com/photos/70125105@N06",
+                  "license":  "pdm",
+                  "license_version":  "1.0",
+                  "license_url":  "https://creativecommons.org/publicdomain/mark/1.0/",
+                  "foreign_landing_url":  "https://www.flickr.com/photos/70125105@N06/27289169389",
+                  "source":  "flickr"
+              },
+    "cabeza":  {
+                   "src":  "assets/img/cabeza.jpg",
+                   "title":  "Marble Head of an Athlete, ca. A.C.E. 138-92 (Metropolitan Museum of Art)",
+                   "creator":  "takomabibelot",
+                   "creator_url":  "https://www.flickr.com/photos/38782010@N00",
+                   "license":  "cc0",
+                   "license_version":  "1.0",
+                   "license_url":  "https://creativecommons.org/publicdomain/zero/1.0/",
+                   "foreign_landing_url":  "https://www.flickr.com/photos/38782010@N00/4563082416",
+                   "source":  "flickr"
+               },
+    "boxeo":  {
+                  "src":  "assets/img/boxeo.webp",
+                  "title":  "Stag Sharkey\u0027s (1909) painting high",
+                  "creator":  null,
+                  "creator_url":  null,
+                  "license":  "cc0",
+                  "license_version":  "1.0",
+                  "license_url":  "https://creativecommons.org/publicdomain/zero/1.0/",
+                  "foreign_landing_url":  "https://www.rawpixel.com/image/7726360/image-art-public-domain-paintings",
+                  "source":  "rawpixel"
+              },
+    "lucha":  {
+                  "src":  "assets/img/lucha.webp",
+                  "title":  "Wrestlers by Thomas Eakins",
+                  "creator":  "lacma",
+                  "creator_url":  null,
+                  "license":  "cc0",
+                  "license_version":  "1.0",
+                  "license_url":  "https://creativecommons.org/publicdomain/zero/1.0/",
+                  "foreign_landing_url":  "https://www.rawpixel.com/image/11932581/wrestlers-thomas-eakins",
+                  "source":  "rawpixel"
+              },
+    "discobolo":  {
+                      "src":  "assets/img/discobolo.webp",
+                      "title":  "Discobolus - Vatican Museum Robert",
+                      "creator":  "thegetty",
+                      "creator_url":  null,
+                      "license":  "cc0",
+                      "license_version":  "1.0",
+                      "license_url":  "https://creativecommons.org/publicdomain/zero/1.0/",
+                      "foreign_landing_url":  "https://www.rawpixel.com/image/14253321/the-discobolus-vatican-museum-robert-macpherson",
+                      "source":  "rawpixel"
+                  },
+    "carrera":  {
+                    "src":  "assets/img/carrera.webp",
+                    "title":  "Athletes. Running (ca.1881) photography high",
+                    "creator":  "libraryofcongress",
+                    "creator_url":  null,
+                    "license":  "cc0",
+                    "license_version":  "1.0",
+                    "license_url":  "https://creativecommons.org/publicdomain/zero/1.0/",
+                    "foreign_landing_url":  "https://www.rawpixel.com/image/8657362/photo-image-art-vintage-public-domain",
+                    "source":  "rawpixel"
+                }
+}
