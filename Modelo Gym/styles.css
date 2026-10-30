@@ -954,6 +954,25 @@ em { font-style: italic; font-weight: 400; }
   .room { display: none; }
   .seal { top: auto; bottom: 38vw; right: 16px; width: 92px; }
   .portal { height: 220vh; }
+
+  /* Portal en móvil: las palabras rodean al círculo y llenan la pantalla.
+     Las filas 1 y 3 son iguales, así el círculo queda justo en el centro. */
+  .portal-title {
+    inset: 0;
+    display: grid;
+    grid-template-columns: 1fr 50vw 1fr;
+    grid-template-rows: 1fr 50vw 1fr;
+    align-items: center;
+    justify-items: center;
+    padding-top: 56px; /* deja sitio a la cabecera */
+    padding-bottom: 56px;
+    letter-spacing: -0.02em;
+  }
+  .portal-title br { display: none; }
+  .pt-entra { grid-column: 1 / -1; grid-row: 1; font-size: 28vw; }
+  .pt-en { grid-column: 1; grid-row: 2; font-size: 17vw; }
+  .pt-la { grid-column: 3; grid-row: 2; font-size: 17vw; }
+  .pt-sala { grid-column: 1 / -1; grid-row: 3; font-size: 36vw; }
 }
 @media (max-width: 420px) {
   .stat-pair { flex-direction: column; gap: 4px; }

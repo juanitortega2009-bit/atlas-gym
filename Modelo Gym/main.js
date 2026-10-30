@@ -154,7 +154,8 @@
       portalProgress = p;
       var open = clamp(p / 0.7, 0, 1);
       var e = open * open * (3 - 2 * open); // smoothstep
-      var rMin = Math.min(vw, vh) * 0.16;
+      // En móvil el círculo inicial es mayor: ocupa el hueco central entre las palabras
+      var rMin = vw < 768 ? vw * 0.25 : Math.min(vw, vh) * 0.16;
       var rMax = Math.hypot(vw, vh) / 2 + 4;
       frame.style.setProperty("--pr", lerp(rMin, rMax, e).toFixed(1) + "px");
       frame.style.setProperty("--ps", lerp(1.35, 1, e).toFixed(4));
