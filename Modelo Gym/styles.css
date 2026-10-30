@@ -19,7 +19,6 @@
   --text-body-sm: 15px;
   --text-heading-lg: clamp(34px, 4.6vw, 56px);
   --text-section: clamp(52px, 8.4vw, 112px);
-  --text-display: clamp(170px, 52vw, 1100px);
 
   --gutter: clamp(16px, 3vw, 40px);
   --section-gap: clamp(80px, 11vw, 168px);
@@ -259,7 +258,18 @@ em { font-style: italic; font-weight: 400; }
   justify-content: space-between;
   align-items: center;
   overflow: clip;
-  padding-top: clamp(110px, 18vh, 200px);
+  padding-top: clamp(72px, 11vh, 160px);
+  padding-bottom: 28px; /* "Atlas" no pisa el indicador de sala */
+}
+/* Pantallas verticales: los textos bajan un poco para repartir el espacio libre */
+@media (max-aspect-ratio: 1/1) {
+  .hero { padding-top: clamp(72px, 15vh, 200px); }
+}
+/* Pantallas muy bajas (móvil tumbado): título en una línea para que quepa "Atlas" */
+@media (max-height: 500px) and (min-aspect-ratio: 1/1) {
+  .hero { padding-top: 56px; padding-bottom: 8px; }
+  .hero .hero-cluster { gap: 10px; }
+  .hero .hero-title { max-width: none; font-size: 30px; }
 }
 .hero-cluster {
   position: relative;
@@ -324,10 +334,22 @@ em { font-style: italic; font-weight: 400; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
 /* Wordmark con lupa de pintura */
+/* La caja ocupa el espacio libre bajo los textos de la portada, y "Atlas" se
+   ajusta a ella (cqw/cqh = % de su ancho/alto): siempre se ve entero al entrar. */
+.wordmark-box {
+  flex: 1 1 0;
+  min-height: 130px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  container-type: size;
+}
 .wordmark-wrap {
   position: relative;
+  font-size: min(44vw, 45vh); /* navegadores antiguos */
+  font-size: min(50cqw, 118cqh);
   margin-bottom: -.05em;
-  font-size: var(--text-display);
   --mx: 50%;
   --my: 50%;
   --r: 0px;

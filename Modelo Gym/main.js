@@ -81,8 +81,11 @@
     if (w) splitChars(w);
   }
 
+  // La lupa de "Atlas" no se activa hasta que las letras terminan de subir
+  var heroReady = false;
   function revealHero() {
     document.querySelectorAll(".hero-title, [data-chars]").forEach(function (el) { el.classList.add("is-split-visible"); });
+    setTimeout(function () { heroReady = true; }, 2000);
   }
 
   /* ───────── Telón de entrada ───────── */
@@ -248,6 +251,8 @@
     }
 
     updaters.push(function (t) {
+      // Durante la entrada, la lupa espera; luego nace en el sitio donde esté el ratón
+      if (!heroReady) { mx = tx; my = ty; return; }
       var b = wrap.getBoundingClientRect();
       if (b.bottom < 0 || b.top > vh) return;
       if (canHover) {
