@@ -154,8 +154,8 @@
       portalProgress = p;
       var open = clamp(p / 0.7, 0, 1);
       var e = open * open * (3 - 2 * open); // smoothstep
-      // En móvil el círculo inicial es mayor: ocupa el hueco central entre las palabras
-      var rMin = vw < 768 ? vw * 0.25 : Math.min(vw, vh) * 0.16;
+      // El círculo inicial ocupa el hueco central entre las palabras (ver --portal-c en CSS)
+      var rMin = vh >= vw ? vw * 0.25 : vh * 0.16;
       var rMax = Math.hypot(vw, vh) / 2 + 4;
       frame.style.setProperty("--pr", lerp(rMin, rMax, e).toFixed(1) + "px");
       frame.style.setProperty("--ps", lerp(1.35, 1, e).toFixed(4));
@@ -215,10 +215,9 @@
     });
   }
 
-  /* ───────── Parallax en pinturas y wordmark ───────── */
+  /* ───────── Parallax en las pinturas ───────── */
   function initParallax() {
     var imgs = document.querySelectorAll(".painting-panel > img");
-    var wm = document.querySelector("[data-wordmark]");
     updaters.push(function (t, sd) {
       if (!sd) return;
       imgs.forEach(function (img) {
@@ -227,10 +226,6 @@
         var p = (r.top + r.height / 2 - vh / 2) / (vh + r.height);
         img.style.transform = "translate3d(0," + (p * -10).toFixed(2) + "%,0)";
       });
-      if (wm) {
-        var y = Math.min(window.scrollY, vh);
-        wm.style.transform = "translate3d(0," + (y * 0.22).toFixed(1) + "px,0)";
-      }
     });
   }
 

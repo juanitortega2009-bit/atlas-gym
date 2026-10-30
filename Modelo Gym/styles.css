@@ -328,7 +328,6 @@ em { font-style: italic; font-weight: 400; }
   position: relative;
   margin-bottom: -.05em;
   font-size: var(--text-display);
-  will-change: transform;
   --mx: 50%;
   --my: 50%;
   --r: 0px;
@@ -376,12 +375,23 @@ em { font-style: italic; font-weight: 400; }
   display: grid;
   place-items: center;
 }
+/* Las palabras rodean al círculo: ENTRA arriba, "en" y "la" a los lados, SALA abajo.
+   Las filas 1 y 3 son iguales, así el círculo queda justo en el centro.
+   --portal-c: diámetro del círculo · --portal-f: tamaño de la letra de ENTRA */
 .portal-title {
+  --portal-c: 32vh;
+  --portal-f: min(calc((100vh - var(--portal-c) - 96px) * .46), 21vw);
   position: absolute;
+  inset: 0;
   z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr var(--portal-c) 1fr;
+  grid-template-rows: 1fr var(--portal-c) 1fr;
+  align-items: center;
+  justify-items: center;
+  padding-block: 48px;
   font-family: var(--font-serif);
   font-weight: 500;
-  font-size: clamp(64px, 13vw, 220px);
   line-height: .84;
   letter-spacing: -0.02em;
   text-transform: uppercase;
@@ -389,6 +399,19 @@ em { font-style: italic; font-weight: 400; }
   will-change: transform, opacity;
 }
 .portal-title em { text-transform: none; }
+.pt-entra { grid-column: 1 / -1; grid-row: 1; font-size: var(--portal-f); }
+.pt-sala { grid-column: 1 / -1; grid-row: 3; font-size: calc(var(--portal-f) * 1.29); }
+.pt-en,
+.pt-la { grid-row: 2; font-size: calc(var(--portal-f) * .5); }
+.pt-en { grid-column: 1; justify-self: end; margin-right: 3vh; }
+.pt-la { grid-column: 3; justify-self: start; margin-left: 3vh; }
+/* Pantallas verticales (móviles): las medidas dependen del ancho */
+@media (max-aspect-ratio: 1/1) {
+  .portal-title { --portal-c: 50vw; --portal-f: 28vw; padding-block: 56px; }
+  .pt-sala { font-size: 36vw; }
+  .pt-en,
+  .pt-la { font-size: 17vw; justify-self: center; margin: 0; }
+}
 .portal-frame {
   position: absolute;
   inset: 0;
@@ -954,25 +977,6 @@ em { font-style: italic; font-weight: 400; }
   .room { display: none; }
   .seal { top: auto; bottom: 38vw; right: 16px; width: 92px; }
   .portal { height: 220vh; }
-
-  /* Portal en móvil: las palabras rodean al círculo y llenan la pantalla.
-     Las filas 1 y 3 son iguales, así el círculo queda justo en el centro. */
-  .portal-title {
-    inset: 0;
-    display: grid;
-    grid-template-columns: 1fr 50vw 1fr;
-    grid-template-rows: 1fr 50vw 1fr;
-    align-items: center;
-    justify-items: center;
-    padding-top: 56px; /* deja sitio a la cabecera */
-    padding-bottom: 56px;
-    letter-spacing: -0.02em;
-  }
-  .portal-title br { display: none; }
-  .pt-entra { grid-column: 1 / -1; grid-row: 1; font-size: 28vw; }
-  .pt-en { grid-column: 1; grid-row: 2; font-size: 17vw; }
-  .pt-la { grid-column: 3; grid-row: 2; font-size: 17vw; }
-  .pt-sala { grid-column: 1 / -1; grid-row: 3; font-size: 36vw; }
 }
 @media (max-width: 420px) {
   .stat-pair { flex-direction: column; gap: 4px; }
