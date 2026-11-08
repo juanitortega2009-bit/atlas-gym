@@ -434,31 +434,48 @@ em { font-style: italic; font-weight: 400; }
   .pt-en,
   .pt-la { font-size: 17vw; justify-self: center; margin: 0; }
 }
+/* El círculo es un elemento redondo que se escala (lo mueve la tarjeta gráfica,
+   sin repintar la imagen en cada fotograma). Mide lo que la diagonal de la
+   pantalla (--pd, lo calcula main.js) y empieza pequeño con scale(--p0). */
 .portal-frame {
   position: absolute;
-  inset: 0;
+  left: 50%;
+  top: 50%;
   z-index: 2;
-  clip-path: circle(var(--pr, 14vmin) at 50% 50%);
-  will-change: clip-path;
+  width: var(--pd, 150vmax);
+  height: var(--pd, 150vmax);
+  margin: calc(var(--pd, 150vmax) / -2) 0 0 calc(var(--pd, 150vmax) / -2);
+  border-radius: 50%;
+  overflow: hidden;
+  transform: scale(var(--p0, .2));
+  will-change: transform;
+  backface-visibility: hidden;
 }
 .portal-frame img {
-  width: 100%;
-  height: 100%;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 100vw;
+  height: 100vh;
+  height: 100svh;
+  max-width: none;
   object-fit: cover;
-  transform: scale(var(--ps, 1.35));
+  transform: translate(-50%, -50%) scale(var(--pi, 6));
   will-change: transform;
+  backface-visibility: hidden;
 }
 .portal-card {
   position: relative;
   z-index: 3;
   opacity: 0;
   transform: translateY(40px);
-  transition: opacity .8s var(--ease-out), transform .8s var(--ease-out);
+  transition: opacity .7s var(--ease-out), transform .7s var(--ease-out);
 }
-.portal-card.is-in { opacity: 1; transform: none; }
+.portal-card.is-in { opacity: 1; transform: none; transition-delay: .55s; }
 .no-js .portal { height: auto; }
 .no-js .portal-sticky { position: relative; }
-.no-js .portal-frame { clip-path: none; }
+.no-js .portal-frame { transform: none; inset: 0; left: 0; top: 0; width: auto; height: auto; margin: 0; border-radius: 0; }
+.no-js .portal-frame img { transform: none; left: 0; top: 0; width: 100%; height: 100%; }
 .no-js .portal-card { opacity: 1; transform: none; }
 
 /* Tarjeta con esquinas biseladas */
@@ -660,8 +677,39 @@ em { font-style: italic; font-weight: 400; }
   -webkit-user-select: none;
 }
 .gallery.is-dragging .gallery-track { cursor: grabbing; }
-/* El navegador se encarga del scroll vertical; el gesto lateral lo gestiona la galería */
-.gallery-sticky { touch-action: pan-y; }
+
+/* Móvil y tablet: carrusel nativo que se desliza con el dedo (lo más fluido) */
+.gallery.is-native { height: auto !important; }
+.gallery.is-native .gallery-sticky {
+  position: relative;
+  height: auto;
+  min-height: 100vh;
+  min-height: 100svh;
+  padding: 120px 0 100px;
+  overflow: visible;
+}
+.gallery.is-native .gallery-track {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--gutter);
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  transform: none !important;
+  cursor: auto;
+  user-select: auto;
+  -webkit-user-select: auto;
+}
+.gallery.is-native .gallery-track::-webkit-scrollbar { display: none; }
+.gallery.is-native .gallery-track > * { flex-shrink: 0; scroll-snap-align: center; }
+.gallery.is-native .gallery-intro { scroll-snap-align: start; }
+.gallery.is-native .exhibit,
+.gallery.is-native .exhibit-img img { transition: none; }
+.gallery.is-native .exhibit-img img { transform: scale(1.06); }
+/* El último cuadro necesita aire a la derecha para poder centrarse */
+.gallery.is-native .gallery-track::after { content: ""; flex: 0 0 1px; }
 .gallery-intro {
   /* El bloque mide lo que mida el título "DISCIPLINAS" (nunca menos de 520px),
      así la última S no puede salirse y quedar debajo del primer cuadro */

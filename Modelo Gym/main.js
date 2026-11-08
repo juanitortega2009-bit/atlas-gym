@@ -147,24 +147,94 @@
     var sec = document.querySelector("[data-portal]");
     if (!sec) return;
     var frame = sec.querySelector("[data-portal-frame]");
+    var img = frame.querySelector("img");
     var title = sec.querySelector("[data-portal-title]");
     var card = sec.querySelector("[data-portal-card]");
-    updaters.push(function (t, sd) {
-      if (!sd) return;
-      var r = sec.getBoundingClientRect();
-      if (r.bottom < 0 || r.top > vh) return;
-      var p = clamp(-r.top / (r.height - vh), 0, 1);
-      portalProgress = p;
-      var open = clamp(p / 0.7, 0, 1);
-      var e = open * open * (3 - 2 * open); // smoothstep
+    /* La sala se abre con una animación por tiempo (no atada al scroll), hecha
+       solo con transform y opacity: la ejecuta la tarjeta gráfica y va fluida
+       también en el móvil. El scroll solo decide si la sala está abierta o no. */
+    var DUR = 1150;
+    var cur = 0, from = 0, to = 0, t0 = 0, dur = 0, anims = [];
+    var s0 = 0.2;
+
+    function geometry() {
       // El círculo inicial ocupa el hueco central entre las palabras (ver --portal-c en CSS)
       var rMin = vh >= vw ? vw * 0.25 : vh * 0.16;
       var rMax = Math.hypot(vw, vh) / 2 + 4;
-      frame.style.setProperty("--pr", lerp(rMin, rMax, e).toFixed(1) + "px");
-      frame.style.setProperty("--ps", lerp(1.35, 1, e).toFixed(4));
-      title.style.transform = "scale(" + lerp(1, 1.5, e).toFixed(3) + ")";
-      title.style.opacity = String(clamp(1 - e * 1.4, 0, 1));
-      card.classList.toggle("is-in", p > 0.74);
+      s0 = rMin / rMax;
+      frame.style.setProperty("--pd", (rMax * 2).toFixed(1) + "px");
+    }
+    function ease(k) { return k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2; }
+    // Estado visual para un avance e (0 cerrada → 1 abierta)
+    function state(e) {
+      var s = lerp(s0, 1, e);
+      return {
+        frame: "scale(" + s.toFixed(5) + ")",
+        img: "translate(-50%, -50%) scale(" + (lerp(1.35, 1, e) / s).toFixed(5) + ")",
+        title: "scale(" + lerp(1, 1.5, e).toFixed(4) + ")",
+        op: clamp(1 - e * 1.4, 0, 1)
+      };
+    }
+    function paint(e) {
+      var st = state(e);
+      frame.style.transform = st.frame;
+      img.style.transform = st.img;
+      title.style.transform = st.title;
+      title.style.opacity = String(st.op);
+    }
+    function current() {
+      if (!dur) return cur;
+      var k = clamp((performance.now() - t0) / dur, 0, 1);
+      return lerp(from, to, ease(k));
+    }
+    function animateTo(target) {
+      var start = current();
+      anims.forEach(function (a) { a.cancel(); });
+      anims = [];
+      from = start; to = target; cur = target;
+      dur = DUR * Math.abs(target - start);
+      portalProgress = target;
+      card.classList.toggle("is-in", target === 1);
+      if (dur < 16 || !frame.animate) { dur = 0; paint(target); return; }
+      t0 = performance.now();
+      // Fotogramas clave ya calculados con la curva: así el círculo y la imagen
+      // se compensan exactamente en cada instante
+      var kf = { frame: [], img: [], title: [] };
+      for (var i = 0; i <= 24; i++) {
+        var st = state(lerp(start, target, ease(i / 24)));
+        kf.frame.push({ transform: st.frame });
+        kf.img.push({ transform: st.img });
+        kf.title.push({ transform: st.title, opacity: st.op });
+      }
+      var opts = { duration: dur, easing: "linear", fill: "forwards" };
+      anims = [frame.animate(kf.frame, opts), img.animate(kf.img, opts), title.animate(kf.title, opts)];
+      paint(target); // estado final de base, por si la animación se cancela
+    }
+
+    geometry();
+    paint(0);
+    var lastW = vw, lastH = vh;
+    window.addEventListener("resize", function () {
+      // En móvil la barra del navegador cambia el alto: solo recalculamos si cambia de verdad
+      if (Math.abs(vw - lastW) < 2 && Math.abs(vh - lastH) < 120) return;
+      lastW = vw; lastH = vh;
+      geometry();
+      anims.forEach(function (a) { a.cancel(); });
+      anims = []; dur = 0;
+      paint(cur);
+    });
+
+    var open = false, first = true;
+    updaters.push(function (t, sd) {
+      if (!sd) return;
+      var r = sec.getBoundingClientRect();
+      var p = clamp(-r.top / Math.max(1, r.height - vh), 0, 1);
+      // Abierta en la segunda mitad del recorrido; cerrada antes
+      var want = r.top < -2 && p > 0.4;
+      if (want === open && !first) return;
+      open = want;
+      if (first) { first = false; cur = open ? 1 : 0; dur = 0; portalProgress = cur; paint(cur); card.classList.toggle("is-in", open); return; }
+      animateTo(open ? 1 : 0);
     });
   }
 
@@ -361,13 +431,33 @@
     var count = sec.querySelector("[data-gallery-count]");
     var exhibits = track.querySelectorAll(".exhibit");
     var introHead = track.querySelector(".gallery-intro [data-split]");
-    // Desplazamiento horizontal en todos los tamaños (también móvil)
-    var desktop = true, dist = 0;
+    /* Dos modos:
+       · Ordenador: la sección se queda fija y la rueda la recorre en horizontal
+         (también se puede arrastrar con el ratón o con el trackpad lateral).
+       · Móvil y tablet: carrusel nativo del navegador, que se desliza con el
+         dedo hacia los lados. Es lo más fluido posible en una pantalla táctil. */
+    var mqNative = matchMedia("(max-width: 899px), (hover: none), (pointer: coarse)");
+    var native = mqNative.matches;
+    var desktop = !native, dist = 0;
 
     function measure() {
+      if (native) {
+        sec.style.height = "";
+        track.style.transform = "";
+        return;
+      }
       dist = Math.max(0, track.scrollWidth - window.innerWidth);
       sec.style.height = (dist + window.innerHeight) + "px";
     }
+    function applyMode() {
+      native = mqNative.matches;
+      desktop = !native;
+      sec.classList.toggle("is-native", native);
+      measure();
+      scrollDirty = true;
+    }
+    sec.classList.toggle("is-native", native);
+    if (mqNative.addEventListener) mqNative.addEventListener("change", applyMode);
     measure();
     // En móvil la barra del navegador cambia la altura al hacer scroll: solo
     // recalculamos si cambia el ancho, para evitar saltos.
@@ -380,11 +470,42 @@
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
 
     var lastIdx = -1;
+    function setCount(idx) {
+      if (idx !== lastIdx) { lastIdx = idx; count.textContent = "0" + (idx + 1) + " / 0" + exhibits.length; }
+    }
+
+    // Carrusel nativo (móvil): la barra y el contador siguen al scroll lateral
+    var nativeQueued = false;
+    track.addEventListener("scroll", function () {
+      if (!native || nativeQueued) return;
+      nativeQueued = true;
+      requestAnimationFrame(function () {
+        nativeQueued = false;
+        var max = Math.max(1, track.scrollWidth - track.clientWidth);
+        bar.style.setProperty("--gp", clamp(track.scrollLeft / max, 0, 1).toFixed(4));
+        var idx = 0, best = Infinity;
+        exhibits.forEach(function (ex, i) {
+          var b = ex.getBoundingClientRect();
+          if (b.left < vw * 0.9 && b.right > 0) ex.classList.add("is-visible");
+          var c = Math.abs(b.left + b.width / 2 - vw / 2);
+          if (c < best) { best = c; idx = i; }
+        });
+        setCount(idx);
+      });
+    }, { passive: true });
+
     updaters.push(function (t, sd) {
       if (!sd) return;
       var r = sec.getBoundingClientRect();
       if (r.bottom < -50 || r.top > vh + 50) return;
       if (r.top < vh * 0.7 && introHead) introHead.classList.add("is-split-visible");
+      if (native) {
+        exhibits.forEach(function (ex) {
+          var b = ex.getBoundingClientRect();
+          if (b.left < vw * 0.9 && b.right > 0 && b.top < vh * 0.9 && b.bottom > 0) ex.classList.add("is-visible");
+        });
+        return;
+      }
       if (desktop) {
         var p = clamp(-r.top / Math.max(1, r.height - vh), 0, 1);
         track.style.transform = "translate3d(" + (-p * dist).toFixed(1) + "px,0,0)";
@@ -401,15 +522,16 @@
           ex.style.setProperty("--shift", shift.toFixed(1) + "px");
         }
       });
-      if (idx !== lastIdx) { lastIdx = idx; count.textContent = "0" + (idx + 1) + " / 0" + exhibits.length; }
+      setCount(idx);
     });
 
-    /* Gestos laterales: arrastrar con el ratón, deslizar el dedo hacia los lados
+    /* Gestos laterales (solo ordenador; en móvil el carrusel es nativo): arrastrar con el ratón, deslizar el dedo hacia los lados
        o mover el trackpad en horizontal también recorren la galería.
        La galería avanza 1 px por cada px de scroll de la página, así que basta
        con mover el scroll vertical dentro del tramo de la sección. */
     var html = document.documentElement;
     function pinned() {
+      if (native) return false;
       var r = sec.getBoundingClientRect();
       return r.top <= 2 && r.bottom >= vh - 2;
     }
@@ -616,57 +738,27 @@
     window.addEventListener("touchend", function () { held = false; });
     window.addEventListener("touchcancel", function () { held = false; });
 
-    // Curva de movimiento: arranca a la velocidad que ya llevabas (m0) y frena
-    // suavemente hasta pararse en el destino. Así no hay tirón al empezar.
-    //   m0 = 0 → arranca desde parado · m0 = 1 → velocidad media · m0 > 1 → arranque rápido
-    function curve(k, m0) {
-      var k2 = k * k, k3 = k2 * k;
-      return (k3 - 2 * k2 + k) * m0 + (-2 * k3 + 3 * k2);
-    }
+    /* Ir al inicio o al final del portal. La sala está fija en pantalla durante
+       todo el tramo, así que el salto de scroll es invisible: lo que se ve es la
+       animación de apertura/cierre (initPortal), que va por la tarjeta gráfica.
+       Mientras dura, se ignoran los gestos para que la inercia no la interrumpa. */
+    var LOCK = 1000;
     function go(y) {
-      var from = window.scrollY;
-      var d = y - from;
-      if (Math.abs(d) < 2) return;
-      var dist = Math.abs(d);
-      // Duración proporcional a la distancia: un tramo corto dura poco; uno largo, más
-      var dur = clamp(300 + (dist / vh) * 600, 300, 1700);
-      // Si ya venías con velocidad, la duración se adapta para continuarla sin frenazo
-      var v0 = currentVel();
-      var aligned = v0 * d > 0 && Math.abs(v0) > 0.05;
-      if (aligned) dur = clamp(Math.min(dur, (1.8 * dist) / Math.abs(v0)), 300, 1700);
-      // Velocidad de arranque normalizada; con un mínimo para que nunca arranque "a tirones"
-      var m0 = aligned ? (Math.abs(v0) * dur) / dist : 0;
-      m0 = clamp(m0, 0.9, 2.6);
-      var t0 = performance.now();
-      var done = false;
+      if (Math.abs(y - window.scrollY) < 2) return;
       stepping = true;
       html.style.scrollBehavior = "auto";
-      function finish() {
-        if (done) return;
-        done = true;
-        clearTimeout(safety);
-        window.scrollTo(0, y);
-        html.style.scrollBehavior = "";
+      window.scrollTo(0, y);
+      html.style.scrollBehavior = "";
+      lastScrollY = window.scrollY;
+      vel = 0;
+      setTimeout(function () {
         stepping = false;
-        vel = 0; // la velocidad de la animación no cuenta como velocidad tuya
         lastScrollY = window.scrollY;
         var now = performance.now();
-        // Filtro de inercia: proporcional al salto (un ajuste corto apenas espera),
-        // y como máximo 0,7 s
-        var cool = Math.min(700, dur * 0.6);
-        coolUntil = now + Math.min(250, cool);
-        coolHardStop = now + cool;
-      }
-      function frame(now) {
-        if (done) return;
-        var k = clamp((now - t0) / dur, 0, 1);
-        window.scrollTo(0, from + d * curve(k, m0));
-        if (k < 1) requestAnimationFrame(frame);
-        else finish();
-      }
-      // Red de seguridad: si el navegador pausa la animación, el salto se completa igual
-      var safety = setTimeout(finish, dur + 400);
-      requestAnimationFrame(frame);
+        // Filtro de inercia del trackpad tras la animación (como máximo 0,6 s más)
+        coolUntil = now + 250;
+        coolHardStop = now + 600;
+      }, LOCK);
     }
 
     // Rueda del ratón / trackpad
