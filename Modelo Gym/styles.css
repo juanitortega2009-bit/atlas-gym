@@ -655,7 +655,13 @@ em { font-style: italic; font-weight: 400; }
   padding: 0 8vw;
   width: max-content;
   will-change: transform;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
 }
+.gallery.is-dragging .gallery-track { cursor: grabbing; }
+/* El navegador se encarga del scroll vertical; el gesto lateral lo gestiona la galería */
+.gallery-sticky { touch-action: pan-y; }
 .gallery-intro {
   /* El bloque mide lo que mida el título "DISCIPLINAS" (nunca menos de 520px),
      así la última S no puede salirse y quedar debajo del primer cuadro */

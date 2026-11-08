@@ -403,6 +403,102 @@
       });
       if (idx !== lastIdx) { lastIdx = idx; count.textContent = "0" + (idx + 1) + " / 0" + exhibits.length; }
     });
+
+    /* Gestos laterales: arrastrar con el ratón, deslizar el dedo hacia los lados
+       o mover el trackpad en horizontal también recorren la galería.
+       La galería avanza 1 px por cada px de scroll de la página, así que basta
+       con mover el scroll vertical dentro del tramo de la sección. */
+    var html = document.documentElement;
+    function pinned() {
+      var r = sec.getBoundingClientRect();
+      return r.top <= 2 && r.bottom >= vh - 2;
+    }
+    function moveBy(dx) {
+      var top = sec.getBoundingClientRect().top + window.scrollY;
+      var y = clamp(window.scrollY + dx, top, top + dist);
+      if (Math.abs(y - window.scrollY) < 0.5) return false;
+      var prev = html.style.scrollBehavior;
+      html.style.scrollBehavior = "auto";     // sin el "smooth" de la página: sigue al dedo
+      window.scrollTo(0, y);
+      html.style.scrollBehavior = prev;
+      return true;
+    }
+    // Inercia al soltar, para que no se pare en seco
+    var glideId = 0;
+    function glide(v) {
+      var id = ++glideId, last = performance.now();
+      (function step(now) {
+        if (id !== glideId) return;
+        var dt = Math.min(32, now - last); last = now;
+        v *= Math.pow(0.94, dt / 16);
+        if (Math.abs(v) < 0.02 || !moveBy(v * dt)) return;
+        requestAnimationFrame(step);
+      })(last);
+    }
+    function stopGlide() { glideId++; }
+
+    // Trackpad lateral o Mayús + rueda
+    sec.addEventListener("wheel", function (e) {
+      if (e.ctrlKey || !pinned()) return;
+      var dx = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : (e.shiftKey ? e.deltaY : 0);
+      if (!dx) return;
+      stopGlide();
+      if (moveBy(dx * (e.deltaMode === 1 ? 40 : e.deltaMode === 2 ? vw : 1))) e.preventDefault();
+    }, { passive: false });
+
+    // Dedo: si el gesto es más lateral que vertical, mueve la galería
+    var tx = 0, ty = 0, lastX = 0, lastT = 0, tv = 0, lock = null;
+    sec.addEventListener("touchstart", function (e) {
+      stopGlide();
+      tx = lastX = e.touches[0].clientX; ty = e.touches[0].clientY;
+      lastT = performance.now(); tv = 0; lock = null;
+    }, { passive: true });
+    sec.addEventListener("touchmove", function (e) {
+      var x = e.touches[0].clientX, y = e.touches[0].clientY;
+      if (lock === null) {
+        if (Math.abs(x - tx) < 8 && Math.abs(y - ty) < 8) return;
+        lock = Math.abs(x - tx) > Math.abs(y - ty) && pinned() ? "h" : "v";
+      }
+      if (lock !== "h") return;
+      e.preventDefault();
+      var now = performance.now(), dx = lastX - x;
+      moveBy(dx);
+      tv = tv * 0.3 + (dx / Math.max(1, now - lastT)) * 0.7;
+      lastX = x; lastT = now;
+    }, { passive: false });
+    sec.addEventListener("touchend", function () {
+      if (lock === "h" && performance.now() - lastT < 80) glide(tv);
+      lock = null;
+    });
+
+    // Ratón: arrastrar hacia los lados
+    var dragging = false, moved = false, mx = 0, mLastT = 0, mv = 0;
+    track.querySelectorAll("img").forEach(function (img) { img.draggable = false; });
+    track.addEventListener("pointerdown", function (e) {
+      if (e.pointerType !== "mouse" || e.button !== 0 || !pinned()) return;
+      stopGlide();
+      dragging = true; moved = false; mx = e.clientX; mLastT = performance.now(); mv = 0;
+    });
+    window.addEventListener("pointermove", function (e) {
+      if (!dragging) return;
+      var dx = mx - e.clientX;
+      if (!moved && Math.abs(dx) < 5) return;
+      if (!moved) { moved = true; sec.classList.add("is-dragging"); }
+      var now = performance.now();
+      moveBy(dx);
+      mv = mv * 0.3 + (dx / Math.max(1, now - mLastT)) * 0.7;
+      mx = e.clientX; mLastT = now;
+    });
+    window.addEventListener("pointerup", function () {
+      if (!dragging) return;
+      dragging = false;
+      sec.classList.remove("is-dragging");
+      if (moved && performance.now() - mLastT < 80) glide(mv);
+    });
+    // Tras arrastrar, el clic de soltar no cuenta como clic
+    track.addEventListener("click", function (e) {
+      if (moved) { e.preventDefault(); e.stopPropagation(); moved = false; }
+    }, true);
   }
 
   /* ───────── Manifiesto: palabras que se "tallan" ───────── */
